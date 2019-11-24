@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    /* RESET */
+
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    body {
+            font-family: 'Muli', sans-serif;
+        display: grid;
+        grid-template-columns: 0.1fr 1fr 1fr 0.1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    body>section {
+        grid-column: 2 / 4;
+        position: relative;
+    }
+
+    section:nth-child(2) {
+        word-wrap: anywhere;
+    }
+
+    main {
+        width: 100%;
+        max-height: 400px;
+        overflow-y: hidden;
+    }
+
+    video {
+        width: 100%;
+    }
+
+    div {
+        text-align: center;
+        position: absolute;
+        top: 0;
+        background: rgba(0, 0, 0, 0.5);
+        color: #f1f1f1;
+        padding: 20px;
+    }
+
+    p {
+    color: rgb(210, 209, 209);
+    font-weight: lighter;
+}
+
+    button {
+        width: 200px;
+        font-size: 18px;
+        padding: 10px;
+        border: none;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #ddd;
+        color: black;
+    }
+
+    @media screen and (min-width: 320px) {
+        html {
+            font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        html {
+            font-size: 22px;
+        }
+
+        video {
+            margin-top: -100px;
+        }
+
+        div {
+            left: 25%;
+            right: 25%;
+            top: 25%;
+        }
+
+    }
+</style>
+
+<body>
+    <section>
+        <main>
+            <video autoplay muted loop>
+                <source src="https://i.imgur.com/HsF8S3A.mp4" type="video/mp4">
+            </video>
+        </main>
+        <div>
+            <h1>Asian American Cultural Center</h1>
+            <p>Promoting Asian culture in America through the teaching of traditional martial arts and lion dance.</p>
+            <button>Learn More</button>
+        </div>
+    </section>
+    <section>
+        Applying Gates to a Part of the System
+
+        The simplest thing we can do with multi-qubit systems is to apply gates to only a subset of qubits in the
+        system.
+        Similar to how it is sometimes possible to represent the state of a multi-qubit systems as a tensor product of
+        single-qubit states, you can construct gates that modify the state of a multi-qubit system as tensor products of
+        gates
+        that affect parts of the system.
+
+        Let's consider an example of applying single-qubit gates to one of the qubits of a two-qubit system. If you want
+        to
+        apply an 𝑋
+        gate to the first qubit of the system and do nothing to the second qubit, the resulting gate will be represented
+        as a
+        tensor product of an 𝑋 gate and the identity gate 𝐼
+
+        which corresponds to doing nothing:
+
+        𝑋⊗𝐼=[0110]⊗[1001]=0010000110000100
+
+        You can use the same approach when applying several gates to independent parts of the system at the same time.
+        For
+        example, applying the 𝑋
+        gate to the first qubit and the 𝐻
+
+        gate to the second qubit would be represented as follows:
+
+        𝑋⊗𝐻=[0110]⊗12⎯⎯√[111−1]=12⎯⎯√0011001−111001−100
+
+        Note that we can use mixed-multiplication property of tensor product to see that this is equivalent to first
+        applying 𝑋
+
+        gate to the first qubit and then applying 𝐻
+
+        gate to the second qubit:
+
+        𝑋⊗𝐻=(𝐼𝑋)⊗(𝐻𝐼)=(𝐼⊗𝐻)(𝑋⊗𝐼)
+
+        This approach can be generalized to larger systems and gates that act on multiple qubits as well. It can be less
+        straightforward if a multi-qubit gate is applied to a subset of qubits that are not "adjacent" to each other in
+        the
+        tensor product; we'll see an example later in this tutorial.
+        Exercise 1: Compound Gate
+
+        Inputs: 3
+        qubits in an arbitrary superposition state |𝜓⟩
+
+        , stored in an array of length 3.
+
+        Goal: Apply the following matrix to the system. This matrix can be represented as applying 3
+
+        single-qubit gates.
+
+        𝑄=0𝑖000000−𝑖0000000000𝑖000000−𝑖0000000000−100000010000000000−100000010
+
+        We recommend to keep a list of common quantum gates on hand, such as this tutorial.
+
+        Need a hint? Click here
+        Start by noticing that the top right and bottom left quadrants of the matrix are filled with s, and the bottom
+        right
+        quadrant equals to the top left one, multiplied by . This hints at applying to the first qubit:
+
+        %kata T1_CompoundGate_Test
+
+        ​
+
+        operation CompoundGate (qs : Qubit[]) : Unit is Adj {
+
+        // ...
+
+        }
+
+        CNOT Gate
+
+        Our first proper multi-qubit gate is the CNOT
+        ("controlled NOT") gate. The CNOT gate is a two-qubit gate, the first qubit is referred to as the control qubit,
+        and the
+        second as the target qubit. CNOT acts as a conditional gate of sorts: if the control qubit is in state |1⟩, it
+        applies
+        the 𝑋
+
+        gate to the target qubit, otherwise it does nothing.
+
+        If the system is in a superposition of several basis states, the effects of the gate will be a linear
+        combination of the
+        effects of it acting separately on each of the basis states. This will be the case for all quantum gates you'll
+        encounter later that are specified in terms of basis states: since all unitary gates are linear, it is
+        sufficient to
+        define their effect on the basis states, and use linearity to figure out their effect on any state.
+
+        Gate Matrix Applying to |𝜓⟩=𝛼|00⟩+𝛽|01⟩+𝛾|10⟩+𝛿|11⟩
+        Applying to basis states Q# Documentation
+        CNOT
+        1000010000010010
+        CNOT|𝜓⟩=𝛼|00⟩+𝛽|01⟩+𝛿|10⟩+𝛾|11⟩
+        CNOT|00⟩=|00⟩CNOT|01⟩=|01⟩CNOT|10⟩=|11⟩CNOT|11⟩=|10⟩
+        CNOT
+
+        The CNOT
+
+        gate is particularly useful for preparing entangled states. Consider the following separable state:
+
+        (𝛼|0⟩+𝛽|1⟩)⊗|0⟩=𝛼|00⟩+𝛽|10⟩
+
+        If we apply the CNOT
+
+        gate to it, with the first qubit as the control, and the second as the target, we get the following state, which
+        is not
+        separable any longer:
+
+        𝛼|00⟩+𝛽|11⟩
+
+        The CNOT
+        gate is self-adjoint: a
+    </section>
+</body>
+
+</html>
