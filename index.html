@@ -17,7 +17,7 @@
     }
 
     body {
-            font-family: 'Muli', sans-serif;
+        font-family: 'Muli', sans-serif;
         display: grid;
         grid-template-columns: 0.1fr 1fr 1fr 0.1fr;
         grid-template-rows: auto 1fr;
@@ -49,15 +49,25 @@
         background: rgba(0, 0, 0, 0.5);
         color: #f1f1f1;
         padding: 20px;
+
+        bottom: 1.5%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: space-around;
+
+        align-items: center;
     }
 
     p {
-    color: rgb(210, 209, 209);
-    font-weight: lighter;
-}
+        color: rgb(210, 209, 209);
+        font-weight: lighter;
+        display: none;
+    }
 
     button {
-        width: 200px;
         font-size: 18px;
         padding: 10px;
         border: none;
@@ -91,7 +101,22 @@
             right: 25%;
             top: 25%;
         }
+    }
 
+    @media screen and (min-width: 600px) {
+        button {
+            width: 200px;
+        }
+
+        div {
+            justify-content: inherit;
+            bottom: inherit;
+        }
+    }
+    @media screen and (min-width: 400px) {
+            p {
+            display: inherit;
+        }
     }
 </style>
 
